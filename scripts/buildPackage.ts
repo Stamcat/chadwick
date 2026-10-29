@@ -219,7 +219,12 @@ export class PackageBuilder {
         createPackageJson();
         copyPrepublishScript();
         createIgnoreFile();
-        copyExtension("src", [".css", ".png", ".jpg", ".ttf", ".bin", ".md"]);
+        // Component-level .css (e.g. Button.css) is a Vite build entry — Vite already emitted its
+        // compiled output (with @apply/@reference resolved) to the matching dist/ path, so a raw
+        // source copy here would clobber it. Only src/styles holds standalone CSS assets (plain
+        // custom properties, no Tailwind processing needed) that are meant to ship as raw source.
+        copyExtension("src", [".png", ".jpg", ".ttf", ".bin", ".md"]);
+        copyExtension(path.join("src", "styles"), [".css"]);
         copyExtension("guidelines", [".md"]);
         inlineComponentGuidelines();
         copyFile("README.md");

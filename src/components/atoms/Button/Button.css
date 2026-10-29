@@ -1,0 +1,102 @@
+/* Button's visual styles live here as custom classes (not inline Tailwind utility chains in
+   Button.tsx) — see ../../../../.github/skills/styling/SKILL.md for why. */
+@reference "../../../index.css";
+
+.btn {
+    @apply inline-flex shrink-0 items-center justify-center;
+    @apply rounded-lg border border-transparent bg-clip-padding;
+    @apply text-sm font-medium whitespace-nowrap;
+    @apply transition-all outline-none select-none;
+    @apply focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50;
+    @apply active:not-aria-[haspopup]:translate-y-px;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    @apply aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20;
+    @apply dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40;
+    @apply [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
+}
+
+.btn--default {
+    @apply bg-primary text-primary-foreground;
+    @apply hover:bg-primary/80;
+}
+
+.btn--outline {
+    @apply border-border bg-background;
+    @apply hover:bg-muted hover:text-foreground;
+    @apply aria-expanded:bg-muted aria-expanded:text-foreground;
+    @apply dark:border-input dark:bg-input/30 dark:hover:bg-input/50;
+}
+
+.btn--secondary {
+    @apply bg-secondary text-secondary-foreground;
+    @apply hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)];
+    @apply aria-expanded:bg-secondary aria-expanded:text-secondary-foreground;
+}
+
+.btn--ghost {
+    @apply hover:bg-muted hover:text-foreground;
+    @apply aria-expanded:bg-muted aria-expanded:text-foreground;
+    @apply dark:hover:bg-muted/50;
+}
+
+.btn--destructive {
+    @apply bg-destructive/10 text-destructive;
+    @apply hover:bg-destructive/20;
+    @apply focus-visible:border-destructive/40 focus-visible:ring-destructive/20;
+    @apply dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40;
+}
+
+.btn--link {
+    @apply text-primary underline-offset-4 hover:underline;
+}
+
+.btn--size-default {
+    @apply h-8 gap-1.5 px-2.5;
+    @apply has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2;
+}
+
+.btn--size-xs {
+    @apply h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs;
+    @apply in-data-[slot=button-group]:rounded-lg;
+    @apply has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5;
+    @apply [&_svg:not([class*='size-'])]:size-3;
+}
+
+.btn--size-sm {
+    @apply h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem];
+    @apply in-data-[slot=button-group]:rounded-lg;
+    @apply has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5;
+    @apply [&_svg:not([class*='size-'])]:size-3.5;
+}
+
+.btn--size-lg {
+    @apply h-9 gap-1.5 px-2.5;
+    @apply has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2;
+}
+
+.btn--size-icon {
+    @apply size-8;
+}
+
+.btn--size-icon-xs {
+    @apply size-6 rounded-[min(var(--radius-md),10px)];
+    @apply in-data-[slot=button-group]:rounded-lg;
+    @apply [&_svg:not([class*='size-'])]:size-3;
+}
+
+.btn--size-icon-sm {
+    @apply size-7 rounded-[min(var(--radius-md),12px)];
+    @apply in-data-[slot=button-group]:rounded-lg;
+}
+
+.btn--size-icon-lg {
+    @apply size-9;
+}
+
+/* Multiplies size="default"'s own base metrics; pair scale with size="default" (or omit size). */
+.btn--scaled {
+    --btn-scale: 1;
+    @apply h-[calc(2rem*var(--btn-scale))] gap-[calc(0.375rem*var(--btn-scale))];
+    @apply px-[calc(0.625rem*var(--btn-scale))] text-[calc(0.875rem*var(--btn-scale))];
+    @apply [&_svg:not([class*='size-'])]:size-[calc(1rem*var(--btn-scale))];
+}

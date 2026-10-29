@@ -16,16 +16,54 @@ authoring rules (utility-class ordering, when an arbitrary value is acceptable, 
 are intentionally left light until there's more than one component to generalize from. Update this
 file as real patterns emerge, rather than guessing them up front.
 
-## Tailwind utilities + `class-variance-authority`, composed with `cn()`
+## Single custom class per variant/size, authored with `@apply`
 
-- Components express variants/sizes as Tailwind utility-class strings passed to a single `cva()`
-  call (see `Button.tsx`), not a separate stylesheet file and not inline `style` objects for
-  anything expressible as a utility class.
-- Merge a component's own classes with a caller-supplied `className` using `cn()` from
-  `@/lib/utils` (re-exported from the `cn` package — clsx + tailwind-merge semantics). Never
-  concatenate class strings by hand (`` `${base} ${className}` ``) — `cn()` resolves conflicting
-  utilities (e.g. a caller's `bg-*` overriding the variant's own `bg-*`) correctly; naive
-  concatenation doesn't.
+Components do NOT render with long inline Tailwind utility-class chains. Each component owns a
+co-located `.css` file (e.g. `Button.tsx` + `Button.css`) that defines one base class plus one
+class per `variant`/`size` value, each built from Tailwind utilities via `@apply` — `cva()` then
+just picks which of those custom class names apply, instead of assembling raw utility strings:
+
+```css
+/* Button.css */
+@reference "../../../index.css";
+
+.btn {
+    @apply inline-flex items-center justify-center rounded-lg ...;
+}
+
+.btn--default {
+    @apply bg-primary text-primary-foreground hover:bg-primary/80;
+}
+```
+
+```tsx
+// Button.tsx
+import "./Button.css";
+
+const buttonVariants = cva("btn group/button", {
+    variants: {
+        variant: { default: "btn--default", /* ... */ },
+    },
+});
+```
+
+- The `@reference "../../../index.css";` line (pointing at `src/index.css`) is required at the top
+  of every component stylesheet that uses `@apply` or `@theme` values — Tailwind v4 needs it to
+  resolve the theme/utilities for a file that isn't the main CSS entry, without duplicating that
+  entry's output into every component's bundle.
+- Import the component's `.css` file directly from its `.tsx` file (`import "./Button.css";`) —
+  `vite-plugin-lib-inject-css` (already wired in `vite.config.ts`) auto-injects it on import, same
+  as before.
+- A literal Tailwind utility class is still acceptable directly in a `cva()`/`className` string
+  when it's a marker class with no own declarations that `@apply` can't preserve (e.g. `group/button`
+  for `group-hover/button:` on children) — only visual, declaration-producing utilities belong in
+  the `@apply`'d CSS class.
+- Merge a component's own class names with a caller-supplied `className` using `cn()` from
+  `@/lib/utils` (re-exported from the `cn` package — clsx + tailwind-merge semantics). Note that
+  because a component's own classes are now custom (not individual Tailwind utilities),
+  tailwind-merge cannot dedupe a conflicting utility a caller passes against them — overriding
+  a variant's look from the outside is no longer supported via `className`; switch `variant`/`size`
+  instead.
 - `variant`/`size` (or any other variant-shaped prop) should be typed via
   `VariantProps<typeof xVariants>` from `class-variance-authority`, not a hand-written union
   that's kept in sync with the `cva()` call by hand.

@@ -82,5 +82,16 @@ The Tailwind-specific authoring conventions (exact utility-ordering rules, when 
 `style`/arbitrary-value override is acceptable vs. a new `cva` variant, linting for stray literal
 colors) are intentionally light for now and will be filled in under
 [styling](.github/skills/styling/SKILL.md) as the component set grows past `Button`. Until then,
-follow `Button.tsx`'s existing pattern (a single `cva()` call per component, composed with `cn()`)
-for any new component.
+follow `Button.tsx`'s existing pattern (a co-located `.css` file using `@apply`, selected from a
+single `cva()` call, composed with `cn()`) for any new component.
+
+## Editor setup for `@apply`/`@reference`/`@theme`
+
+Component stylesheets (`src/components/**/*.css`) use Tailwind v4's `@apply`/`@reference`/`@theme`
+at-rules, which VS Code's built-in CSS language server doesn't recognize on its own (it'll flag
+them as "Unknown at rule"). This repo's `.vscode/settings.json` already fixes this for anyone who
+opens the repo in VS Code with the recommended extensions installed (`bradlc.vscode-tailwindcss`,
+prompted via `.vscode/extensions.json`) — it re-associates `*.css` files with the `tailwindcss`
+language mode the extension provides, which understands these at-rules and adds class-name
+autocomplete inside `@apply`. If you still see the warning, install that extension and reload the
+window.

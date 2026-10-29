@@ -11,13 +11,14 @@ Props:
 - Inherits all `@base-ui/react/button` `Button` props (which in turn inherit native `<button>` props).
 - `variant?: "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"` (default: `"default"`)
 - `size?: "default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"` (default: `"default"`)
+- `scale?: number` — multiplies `size="default"`'s own height/gap/padding/font-size/icon-size by this factor (e.g. `1.25`), for arbitrary in-between sizes the `size` presets don't cover. Pair it with `size="default"` (or omit `size`) rather than one of the other presets, which it does not scale from.
 
 Before passing `className`, read `setup.md`'s "Styling model" section (applies to every component, not just `Button`) — it explains the Tailwind-utility styling model this library uses and how `className` is merged.
 
 Behavior notes:
 
 - `type` defaults to `"button"` (inherited from the native element, not set explicitly by this component).
-- `className` is merged with the component's own Tailwind classes via [`cn`](https://github.com/shadcn-ui/cn) (clsx + tailwind-merge semantics) — a conflicting utility you pass (e.g. a different `bg-*`) wins over the variant's own class, so prefer switching `variant`/`size` over overriding colors by hand.
+- `className` is merged with the component's own classes via [`cn`](https://github.com/shadcn-ui/cn) (clsx + tailwind-merge semantics), but the component's own visual styling lives behind a single custom class per variant/size (e.g. `btn--default`), not individual Tailwind utilities — so a conflicting Tailwind utility you pass does NOT automatically override it the way it would against a plain utility class. Switch `variant`/`size` instead of trying to recolor a variant via `className`.
 - `default` is the solid primary look; `secondary` is a muted filled look; `outline` and `ghost` are low-emphasis, bordered vs. borderless; `destructive` is a tinted danger look; `link` is borderless and underlines on hover.
 - Each `variant` already applies the correct design tokens internally (see `buttonVariants` in `Button.tsx`) — do not pass a `className` override to recolor a variant when a different variant already matches the intent:
 
@@ -61,6 +62,9 @@ Story-aligned usage examples:
 
 // Native submit behavior
 <Button type="submit" aria-label="Save form">Save</Button>
+
+// Arbitrary size via scale (multiplies size="default"'s metrics)
+<Button scale={1.25}>Save</Button>
 ```
 
 Implementation note:
