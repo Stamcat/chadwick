@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "oxc.oxc-vscode",
+    "vitest.explorer",
+    "storybook.storybook-vscode-extension",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
