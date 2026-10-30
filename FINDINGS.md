@@ -28,7 +28,7 @@ It matters enormously to people editing the library, just not to its consumers. 
 
 ======
 ## Conclusion
-This pattern of extending tailwind via @apply makes things much easier to understand in browser on a renderd page, and it does resolve my gripe about separation of concerns. It's a great middle ground of using tailwind in a way that's clean and easier for the developer. 
+This pattern of extending tailwind via @apply makes things much easier to understand in browser on a renderd page, and it does resolve my gripe about separation of concerns. It's a great middle ground of using tailwind in a way that's clean and easier for the developer. A React template project should absolutely implement this solution by default if the developer chooses to build using tailwind.
 
 However at its core, it's still just a CSS compiler, same as SASS. AI tools are just as capable in SASS as they are with Tailwind utilities. And since a library ships with compiled CSS, the consuming application has no awareness or concern with how the styles of its design system of reusable components are built. This means it is up to the engineer building the design system to engineer a solution that works for the design system (and only design system).
 
