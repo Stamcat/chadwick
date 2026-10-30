@@ -24,3 +24,14 @@ Two caveats worth flagging, not contradicting the point but bounding it:
 It matters enormously to people editing the library, just not to its consumers. This is exactly the distinction AGENTS.md draws at the top: its own rules govern "an application that consumes @stamcat/chadwick" versus CONTRIBUTING.md's rules for the people authoring chadwick's src. The build tool choice is an internal implementation detail chadwick could swap without any consuming app (Tailwind or Sass) ever needing to change a line.
 3:45 PM
 9s
+
+
+======
+## Conclusion
+This pattern of extending tailwind via @apply makes things much easier to understand in browser on a renderd page, and it does resolve my gripe about separation of concerns. It's a great middle ground of using tailwind in a way that's clean and easier for the developer. 
+
+However at its core, it's still just a CSS compiler, same as SASS. AI tools are just as capable in SASS as they are with Tailwind utilities. And since a library ships with compiled CSS, the consuming application has no awareness or concern with how the styles of its design system of reusable components are built. This means it is up to the engineer building the design system to engineer a solution that works for the design system (and only design system).
+
+At the end of the day, I am responsible for the code in my applications, Not AI. As a personal value, I don't produce work that I can't stand behind, which means I need to be able to read and understand what I'm producing. This implementaion of Tailwind makes it *easier* to understand, and is by far the cleanest implementation of Tailwind I've seen, but it's nowhere near as clear as a well-built sass solution.
+
+======
